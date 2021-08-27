@@ -34,7 +34,7 @@ export default function Game(props) {
         onTouchMove={(event) => event.preventDefault()}
       >
         <color attach="background" args={['midnightblue']} />
-        <hemisphereLight args={[0x000080, 0x191970, 0.01]} castShadow />
+        <hemisphereLight args={[0x000080, 0x191970, 1]} castShadow />
         <Box position={[3, 5, -10]} color={"navy"} />
         <Box position={[2, 4, -10]} color={"blue"} />
         <Box position={[1, 3, -10]} color={"teal"} />

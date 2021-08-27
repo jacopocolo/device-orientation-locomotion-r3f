@@ -5,8 +5,7 @@ import {
   Sphere,
   PerspectiveCamera,
   DeviceOrientationControls,
-  SpotLight,
-  useHelper
+  SpotLight
 } from "@react-three/drei";
 
 export default function Player(props) {
@@ -25,6 +24,7 @@ export default function Player(props) {
     );
   })
   useEffect(() => {
+    console.log(props.lookAt)
     player.current.lookAt(props.lookAt);
     player.current.rotation.y = player.current.rotation.y + Math.PI;
     light.current.target = target.current;
@@ -61,6 +61,9 @@ export default function Player(props) {
           ""
         )}
       </object3D>
+      <Sphere args={[0.1, 6, 6]} position={[props.lookAt.x, props.lookAt.y, props.lookAt.z]} >
+        <meshBasicMaterial color={"red"} wireframe={true}></meshBasicMaterial>
+      </Sphere>
       <Sphere args={[0.2, 6, 6]} position={[targetPosition.x, targetPosition.y, targetPosition.z]} ref={target} >
         <meshBasicMaterial color={"yellow"}></meshBasicMaterial>
       </Sphere>
