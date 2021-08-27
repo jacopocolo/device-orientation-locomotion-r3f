@@ -22,9 +22,11 @@ export default function Path(props) {
             position={[0, 0, 0]}
             rotation-x={Math.PI / 2}
             onPointerMove={(event) => {
+              //this is a problem when the point is too close
               setLookAtPreview(
                 new THREE.Vector3(
                   event.point.x,
+                  // event.point.y + 1.65,
                   event.point.y + 1.65,
                   event.point.z
                 )
@@ -75,9 +77,6 @@ export default function Path(props) {
           onPointerDown={(event) => {
             if (event.distance < 10) {
               setMouseDown(true);
-
-              console.log(event.face);
-
               setPositionPreview(
                 new THREE.Vector3(
                   event.point.x,
@@ -114,7 +113,7 @@ useGLTF.preload("/navMesh.gltf");
       side={THREE.DoubleSide}
       rotation-x={Math.PI / 2}
     >
-      
+
     </Plane>*/
 
 /*<Plane

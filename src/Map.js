@@ -12,7 +12,7 @@ export default function Model(props) {
         receiveShadow
         geometry={nodes.Torus.geometry}
       >
-        <meshToonMaterial />
+        <meshStandardMaterial wireframe={false} />
       </mesh>
     </group>
   );
