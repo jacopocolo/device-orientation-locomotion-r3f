@@ -1,6 +1,8 @@
 import React, { useRef, useEffect, useState } from "react";
 import * as THREE from "three";
+import { useFrame } from "@react-three/fiber"
 import {
+  Sphere,
   PerspectiveCamera,
   DeviceOrientationControls,
   SpotLight
@@ -14,23 +16,22 @@ export default function Player(props) {
 
   const [targetPosition, setTargetPosition] = useState(new THREE.Vector3());
 
-  useEffect(() => {
+  //useHelper(light, THREE.SpotLightHelper, 'cyan')
+
+  useFrame(() => {
     setTargetPosition(
       firstPersonCamera.current.localToWorld(new THREE.Vector3(0, 0, -10))
     );
+  })
+  useEffect(() => {
+    console.log(props.lookAt)
+    player.current.lookAt(props.lookAt);
+    player.current.rotation.y = player.current.rotation.y + Math.PI;
     light.current.target = target.current;
-    player.current.lookAt(props.lookAt.x, props.lookAt.y, props.lookAt.z);
-
-    //if we are not rendering before the game starts
-    if (props.orientationEnabled === true) {
-      player.current.rotation.y = player.current.rotation.y + Math.PI;
-    }
   }, [
     firstPersonCamera,
-    light,
     player,
-    props.lookAt,
-    props.orientationEnabled
+    props.lookAt
   ]);
 
   return (
@@ -39,25 +40,33 @@ export default function Player(props) {
         <PerspectiveCamera
           makeDefault
           ref={firstPersonCamera}
-        ></PerspectiveCamera>
+        >
+          <SpotLight
+            ref={light}
+            color={"0x0000CD"}
+            intensity={0.5}
+            position={[0, 0, 0]}
+            distance={5}
+            angle={0.25}
+            decay={0}
+            penumbra={0.1}
+            attenuation={0}
+            anglePower={5} // Diffuse-cone anglePower (default: 5)
+            castShadow
+          />
+        </PerspectiveCamera>
         {props.orientationEnabled === true ? (
           <DeviceOrientationControls camera={firstPersonCamera.current} />
         ) : (
           ""
         )}
       </object3D>
-      <SpotLight
-        position={props.position}
-        ref={light}
-        distance={20}
-        angle={0.5}
-        decay={2}
-        penumbra={1}
-        attenuation={5}
-        anglePower={5} // Diffuse-cone anglePower (default: 5)
-        castShadow
-      />
-      <object3D position={targetPosition} ref={target} />
+      <Sphere args={[0.1, 6, 6]} position={[props.lookAt.x, props.lookAt.y, props.lookAt.z]} >
+        <meshBasicMaterial color={"red"} wireframe={true}></meshBasicMaterial>
+      </Sphere>
+      <Sphere args={[0.2, 6, 6]} position={[targetPosition.x, targetPosition.y, targetPosition.z]} ref={target} >
+        <meshBasicMaterial color={"yellow"}></meshBasicMaterial>
+      </Sphere>
     </>
   );
 }
