@@ -13,10 +13,7 @@ export default function Player(props) {
   const light = useRef();
   const target = useRef();
   const firstPersonCamera = useRef();
-
   const [targetPosition, setTargetPosition] = useState(new THREE.Vector3());
-
-  //useHelper(light, THREE.SpotLightHelper, 'cyan')
 
   useFrame(() => {
     setTargetPosition(
@@ -24,7 +21,6 @@ export default function Player(props) {
     );
   })
   useEffect(() => {
-    console.log(props.lookAt)
     player.current.lookAt(props.lookAt);
     player.current.rotation.y = player.current.rotation.y + Math.PI;
     light.current.target = target.current;
@@ -53,6 +49,7 @@ export default function Player(props) {
             attenuation={0}
             anglePower={5} // Diffuse-cone anglePower (default: 5)
             castShadow
+            visible={props.flashLight}
           />
         </PerspectiveCamera>
         {props.orientationEnabled === true ? (

@@ -14,6 +14,7 @@ export default function Game(props) {
   const [playerLookAt, setPlayerLookAt] = useState(
     new THREE.Vector3(1, 1.65, 10)
   );
+  const [flashLight, setFlashLight] = useState(false);
 
   return (
     <>
@@ -53,8 +54,10 @@ export default function Game(props) {
           position={[playerPosition.x, playerPosition.y, playerPosition.z]}
           lookAt={playerLookAt}
           orientationEnabled={userInteracted}
+          flashLight={flashLight}
         />
       </Canvas>
+      <button className={"toggleflashlight"} onClick={()=>{setFlashLight(!flashLight)}}>Toggle flashlight</button>
     </>
   );
 }

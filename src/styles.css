@@ -37,3 +37,9 @@ body {
   left: 0;
   z-index: 2;
 }
+
+.toggleflashlight {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+}
