@@ -58,10 +58,11 @@ export default function Player(props) {
           ""
         )}
       </object3D>
-      <Sphere args={[0.1, 6, 6]} position={[props.lookAt.x, props.lookAt.y, props.lookAt.z]} >
+      {/* Debug sphere to check where player is looking at */}
+      {/* <Sphere args={[0.1, 6, 6]} position={[props.lookAt.x, props.lookAt.y, props.lookAt.z]} >
         <meshBasicMaterial color={"red"} wireframe={true}></meshBasicMaterial>
-      </Sphere>
-      <Sphere args={[0.2, 6, 6]} position={[targetPosition.x, targetPosition.y, targetPosition.z]} ref={target} >
+      </Sphere> */}
+      <Sphere args={[0.2, 6, 6]} position={[targetPosition.x, targetPosition.y, targetPosition.z]} ref={target} visible={false} >
         <meshBasicMaterial color={"yellow"}></meshBasicMaterial>
       </Sphere>
     </>

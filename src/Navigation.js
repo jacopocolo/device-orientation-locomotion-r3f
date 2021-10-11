@@ -1,12 +1,13 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { DoubleSide } from "three";
-import { Circle, Plane } from "@react-three/drei";
+import { Box, Circle, Plane } from "@react-three/drei";
 import { useGLTF } from "@react-three/drei";
 
-export default function Path(props) {
+export default function Navigation(props) {
   const { nodes } = useGLTF("/navMesh.gltf");
   const path = useRef();
+  const newPositionIndicator = useRef();
   const lookAtPlane = useRef();
   const [mouseDown, setMouseDown] = useState(false);
   const [positionPreview, setPositionPreview] = useState(new THREE.Vector3());
@@ -23,6 +24,16 @@ export default function Path(props) {
   //   props
   // ]);
 
+  useEffect(()=>{
+    if (mouseDown) {
+    newPositionIndicator.current.lookAt(
+      new THREE.Vector3(
+      lookAtPreview.x,
+      lookAtPreview.y,
+      lookAtPreview.z
+    ))}
+  })
+
   return (
     <>
       {mouseDown === true ? (
@@ -31,7 +42,7 @@ export default function Path(props) {
             ref={lookAtPlane}
             args={[10, 10]}
             position={[positionPreview.x, positionPreview.y, positionPreview.z]}
-            // position={[0, 0, 0]}
+            visible={false}
             rotation-x={Math.PI / 2}
             onPointerMove={(event) => {
               setLookAtPreview(
@@ -44,22 +55,16 @@ export default function Path(props) {
             }}
             onPointerUp={() => {
               if (mouseDown === true) {
-                // let point = lookAtPreview;
-                // let direction = new THREE.Vector3();
-                // direction.subVectors(point, positionPreview).normalize();
-                // var lookAtPoint = point.clone().addScaledVector(direction, 10);
-
-                // setLookAtPreview(new THREE.Vector3(lookAtPoint.x, lookAtPoint.y, lookAtPoint.z))
                 props.playerMoveTo(new THREE.Vector3(positionPreview.x, positionPreview.y + 1.65, positionPreview.z));
                 props.playerLookAt(new THREE.Vector3(lookAtPreview.x, lookAtPreview.y + 1.65, lookAtPreview.z));
                 setMouseDown(false);
               }
             }}
           >
-            <meshStandardMaterial color={"green"} side={DoubleSide} />
+            <meshStandardMaterial side={DoubleSide} />
           </Plane>
           <Circle
-            args={[0.7, 8]}
+            args={[0.5, 8]}
             position={[
               lookAtPreview.x,
               lookAtPreview.y,
@@ -69,8 +74,9 @@ export default function Path(props) {
           >
             <meshStandardMaterial color={"black"} side={DoubleSide} />
           </Circle>
-          <Circle
-            args={[0.7, 8]}
+          <Box
+            ref={newPositionIndicator}
+            args={[0.5, 0.05]}
             position={[
               positionPreview.x,
               positionPreview.y,
@@ -79,7 +85,7 @@ export default function Path(props) {
             rotation-x={Math.PI / 2}
           >
             <meshStandardMaterial color={"yellow"} side={DoubleSide} />
-          </Circle>
+          </Box>
         </>
       ) : (
         <></>
@@ -87,8 +93,6 @@ export default function Path(props) {
       }
       <group ref={path} {...props} dispose={null}>
         <mesh
-          castShadow
-          receiveShadow
           geometry={nodes.navMesh.geometry}
           scale={[2, 2, 2]}
           onPointerDown={(event) => {

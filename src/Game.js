@@ -3,7 +3,7 @@ import { Canvas } from "@react-three/fiber";
 import * as THREE from "three";
 import Box from "./Box";
 import Player from "./Player";
-import Path from "./Path";
+import Navigation from "./Navigation";
 import Map from "./Map.js";
 
 export default function Game(props) {
@@ -14,7 +14,7 @@ export default function Game(props) {
   const [playerLookAt, setPlayerLookAt] = useState(
     new THREE.Vector3(1, 1.65, 10)
   );
-  const [flashLight, setFlashLight] = useState(false);
+  const [flashLight, setFlashLight] = useState(true);
 
   return (
     <>
@@ -45,7 +45,7 @@ export default function Game(props) {
         <Box position={[-1, 3, -10]} color={"red"} />
         <Suspense fallback={<Box />}>
           <Map />
-          <Path
+          <Navigation
             playerMoveTo={setPlayerPosition}
             playerLookAt={setPlayerLookAt}
           />
